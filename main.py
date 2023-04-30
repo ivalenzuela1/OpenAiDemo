@@ -1,6 +1,7 @@
 from IPython.display import display, HTML
+from redlines import Redlines
 import openai
-openai.api_key = "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"
+openai.api_key = "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"
 
 
 def get_completion(prompt, model="gpt-3.5-turbo"):
@@ -13,7 +14,48 @@ def get_completion(prompt, model="gpt-3.5-turbo"):
     return response.choices[0].message["content"]
 
 
-def runPrompt():
+def slangToFormal():
+    prompt2 = f"""
+    Translate the following from slang to a business letter: 
+    'Dude, This is Joe, check out this spec on this standing lamp.'
+    """
+    response = get_completion(prompt2)
+    print(response)
+
+
+def jsonToHtml():
+    data_json = {"resturant employees": [
+        {"name": "Shyam", "email": "shyamjaiswal@gmail.com"},
+        {"name": "Bob", "email": "bob32@gmail.com"},
+        {"name": "Jai", "email": "jai87@gmail.com"}
+    ]}
+
+    prompt = f"""
+    Translate the following python dictionary from JSON to an HTML \
+    table with column headers and title: {data_json}
+    """
+    response = get_completion(prompt)
+    print(response)
+
+
+def proofReadAndCorrect():
+    text = f"""
+    Got this for my daughter for her birthday cuz she keeps taking \
+    mine from my room.  Yes, adults also like pandas too.  She takes \
+    it everywhere with her, and it's super soft and cute.  One of the \
+    ears is a bit lower than the other, and I don't think that was \
+    designed to be asymmetrical. It's a bit small for what I paid for it \
+    though. I think there might be other options that are bigger for \
+    the same price.  It arrived a day earlier than expected, so I got \
+    to play with it myself before I gave it to my daughter.
+    """
+    prompt = f"proofread and correct this review: ```{text}```"
+    response = get_completion(prompt)
+    diff = Redlines(text, response)
+    display((diff.output_markdown))
+
+
+def runPrompt_factChair():
 
     fact_sheet_chair = """OVERVIEW
     - Part of a beautiful family of mid-century inspired office furniture, 
@@ -79,19 +121,16 @@ def runPrompt():
     Give the table the title 'Product Dimensions'.
 
     Format everything as HTML that can be used in a website. 
-    Place the description in a <div> element.
+    Place the description in a <div> element. Also, can you style the website.
 
     Technical specifications: ```{fact_sheet_chair}```
     """
 
     response = get_completion(prompt)
     print(response)
-    showPage(response)
-
-
-def showPage(response):
     display(HTML(response))
+    '''print(response)'''
 
 
 if __name__ == "__main__":
-    runPrompt()
+    runPrompt_factChair()
