@@ -40,6 +40,22 @@ def getPriceFromInvoice():
     print(response)
 
 
+def summarizeResume():
+    sample_pdf = open('/Users/ivalenzuela/Desktop/resume2.pdf', mode='rb')
+    pdfdoc = PyPDF2.PdfReader(sample_pdf)
+
+    text = ""
+    for page in range(len(pdfdoc.pages)):
+        text += pdfdoc.pages[page].extract_text()
+
+    prompt = f"""
+    Your task is to list the main highlights of resume in 5 bullet points.
+    Resume: ```{text}```
+    """
+    response = get_completion(prompt)
+    print(response)
+
+
 def readBenefits():
     # define url
     ''' url = 'https://github.com/ivalenzuela1/OpenAiDemo/blob/main/benefits.pdf' '''
@@ -184,4 +200,4 @@ def runPrompt_factChair():
 
 if __name__ == "__main__":
     get_key()
-    getPriceFromInvoice()
+    summarizeResume()
