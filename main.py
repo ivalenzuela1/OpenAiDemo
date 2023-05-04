@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 def get_key():
-    key = open('/Users/ivalenzuela/Desktop/key.txt', 'r').read()
+    key = open('/Users/ivalenzuela/Desktop/python_key.txt', 'r').read()
     openai.api_key = key
 
 
